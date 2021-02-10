@@ -13,5 +13,8 @@ class News extends Model
         'title',
         'content',
         'date',
+        'created_by',
     ];
+
+    protected $dates = ['date'];
 }
