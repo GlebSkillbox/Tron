@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\NewsRequest;
 use App\Models\News\News;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 
 class NewsController extends Controller
 {
@@ -16,20 +15,10 @@ class NewsController extends Controller
         return response()->json($news);
     }
 
-    public function store()
+    public function store(NewsRequest $request)
     {
-        $validator = Validator::make(request()->all(), [
-            'title'   => ['required', 'string', 'max:255', 'unique:news'],
-            'content' => ['required', 'string'],
-            'date'    => ['required', 'date'],
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()]);
-        }
-
-        $data = request()->all();
-        $data['created_by'] = auth()->id();
+        $data = $request->all();
+        $data['created_by'] = $request->user()->id;
 
         News::create($data);
 
@@ -38,27 +27,12 @@ class NewsController extends Controller
 
     public function show(News $news)
     {
-        return response($news);
+        return response()->json($news);
     }
 
-    public function update(News $news)
+    public function update(News $news, NewsRequest $request)
     {
-        $validator = Validator::make(request()->all(), [
-            'title' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique('news')->ignore($news->id),
-            ],
-            'content' => ['required', 'string'],
-            'date' => ['required', 'date'],
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()]);
-        }
-
-        $news->update(request()->all());
+        $news->update($request->all());
 
         return redirect()->route('api.admin.news.index');
     }
