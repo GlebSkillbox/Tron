@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUsersTable extends Migration
+class CreateFeedbackThemesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,16 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('feedback_themes', function (Blueprint $table) {
             $table->id();
-            $table->string('login');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->decimal('balance', 12, 2)->default(0);
-            $table->rememberToken();
+            $table->text('name');
             $table->timestamps();
         });
+
+        //Предустановленная тема вопроса
+        Artisan::call('db:seed', [
+            '--class' => \Database\Seeders\FeedbackThemeSeeder::class,
+        ]);
     }
 
     /**
@@ -32,6 +32,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('feedback_themes');
     }
 }
