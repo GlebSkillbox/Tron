@@ -13,4 +13,5 @@ Route::prefix('admin')->name('admin.')->middleware('auth:sanctum')->group(functi
     Route::apiResource('news', 'App\Http\Controllers\Api\Admin\NewsController');
 });
 
+Route::apiResource('pages', 'App\Http\Controllers\Api\Pages\PageController');
 Route::apiResource('feedback', 'App\Http\Controllers\Api\FeedbackController')->only('create', 'store');
