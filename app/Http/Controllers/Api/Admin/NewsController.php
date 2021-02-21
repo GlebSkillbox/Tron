@@ -4,43 +4,46 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NewsRequest;
+use App\Http\Resources\News\NewsCollection;
+use App\Http\Resources\News\NewsResource;
 use App\Models\News\News;
 
 class NewsController extends Controller
 {
     public function index()
     {
-        $news = News::latest()->paginate(4);
+        $news = News::latest()->paginate(5);
 
-        return response()->json($news);
+        return new NewsCollection($news);
     }
 
     public function store(NewsRequest $request)
     {
-        $data = $request->all();
-        $data['created_by'] = $request->user()->id;
+        $news = News::create($request->all());
 
-        News::create($data);
-
-        return redirect()->route('api.admin.news.index');
+        return (new NewsResource($news))
+            ->response()
+            ->setStatusCode(201);
     }
 
     public function show(News $news)
     {
-        return response()->json($news);
+        return new NewsResource($news);
     }
 
     public function update(News $news, NewsRequest $request)
     {
         $news->update($request->all());
 
-        return redirect()->route('api.admin.news.index');
+        return (new NewsResource($news))
+            ->response()
+            ->setStatusCode(201);
     }
 
     public function destroy(News $news)
     {
         $news->delete();
 
-        return redirect()->route('api.admin.news.index');
+        return response()->noContent();
     }
 }

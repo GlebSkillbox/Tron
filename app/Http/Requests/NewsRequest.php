@@ -37,4 +37,15 @@ class NewsRequest extends FormRequest
             'date'    => ['required', 'date'],
         ];
     }
+
+    protected function prepareForValidation()
+    {
+        $idNews = $this->route('news')->id ?? null;
+
+        if (! isset($idNews)) {
+            $this->merge([
+                'created_by' => $this->user()->id,
+            ]);
+        }
+    }
 }
