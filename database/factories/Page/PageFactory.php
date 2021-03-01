@@ -3,7 +3,7 @@
 namespace Database\Factories\Page;
 
 use App\Models\Page\Page;
-use App\Models\User;
+use App\Models\User\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PageFactory extends Factory
