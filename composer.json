@@ -1,7 +1,7 @@
 {
     "name": "laravel/Tron",
     "type": "project",
-    "description": "Проект сайта Tron",
+    "description": "Site project Tron",
     "license": "MIT",
     "require": {
         "php": "^7.4|^8.0",
