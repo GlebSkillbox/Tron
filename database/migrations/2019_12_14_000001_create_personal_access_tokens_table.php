@@ -23,13 +23,6 @@ class CreatePersonalAccessTokensTable extends Migration
             $table->timestamp('last_used_at')->nullable();
             $table->timestamps();
         });
-
-        /** @var User $admin */
-        $admin = User::first();
-        $token = $admin->createToken('access_token')->plainTextToken;
-
-        //Создание и вывод в консоль токена админа при заполнении.
-        echo $token . PHP_EOL;
     }
 
     /**
