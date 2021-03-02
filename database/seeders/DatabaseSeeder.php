@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             NewsSeeder::class,
             PagesSeeder::class,
             FeedbackSeeder::class,
+            UserFeedbackSeeder::class,
         ]);
     }
 }

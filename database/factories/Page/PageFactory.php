@@ -23,9 +23,9 @@ class PageFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->title,
-            'body' => $this->faker->randomHtml(),
-            'uri' => $this->faker->url,
+            'title'    => $this->faker->sentence(5),
+            'body'     => $this->faker->randomHtml(),
+            'uri'      => $this->faker->url,
             'owner_id' => User::first(),
         ];
     }
