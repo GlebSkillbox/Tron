@@ -23,6 +23,6 @@ class FeedbackController extends Controller
 
         event(new FeedbackCreated($feedback));
 
-        return redirect()->route('api.feedback.create');
+        return response()->json(['data' => $feedback], 201);
     }
 }

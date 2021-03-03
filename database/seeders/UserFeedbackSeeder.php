@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\User\User;
+use App\Models\User\UserFeedback;
 use Illuminate\Database\Seeder;
 
-class UsersSeeder extends Seeder
+class UserFeedbackSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +14,6 @@ class UsersSeeder extends Seeder
      */
     public function run()
     {
-        User::factory()->count(2)->create();
+        UserFeedback::factory()->count(2)->create();
     }
 }

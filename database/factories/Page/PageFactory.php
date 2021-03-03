@@ -3,7 +3,7 @@
 namespace Database\Factories\Page;
 
 use App\Models\Page\Page;
-use App\Models\User;
+use App\Models\User\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PageFactory extends Factory
@@ -23,9 +23,9 @@ class PageFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->title,
-            'body' => $this->faker->randomHtml(),
-            'uri' => $this->faker->url,
+            'title'    => $this->faker->sentence(5),
+            'body'     => $this->faker->randomHtml(),
+            'uri'      => $this->faker->url,
             'owner_id' => User::first(),
         ];
     }

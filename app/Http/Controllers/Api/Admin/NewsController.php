@@ -10,6 +10,11 @@ use App\Models\News\News;
 
 class NewsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum');
+    }
+
     public function index()
     {
         $news = News::latest()->paginate(5);
