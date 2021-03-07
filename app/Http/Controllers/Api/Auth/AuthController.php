@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
+    protected string $typeToken = 'Bearer';
+
     public function __construct()
     {
         $this->middleware('guest')->only('register');
@@ -32,10 +34,10 @@ class AuthController extends Controller
 
         $token = $user->createToken('token_name')->plainTextToken;
 
-        return response()->json(['token' => $token]);
+        return response()->json(['access_token' => $token, 'type_token' => $this->typeToken]);
     }
 
-    public function token()
+    public function login()
     {
         $validator = Validator::make(request()->all(), [
             'email'    => ['required', 'string'],
@@ -52,6 +54,8 @@ class AuthController extends Controller
             return response()->json(['error' => __('auth.failed')]);
         }
 
-        return response()->json(['token' => $user->createToken('token_name')->plainTextToken]);
+        $token = $user->createToken('token_name')->plainTextToken;
+
+        return response()->json(['access_token' => $token, 'type_token' => $this->typeToken]);
     }
 }

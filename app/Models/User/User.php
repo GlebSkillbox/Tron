@@ -2,6 +2,7 @@
 
 namespace App\Models\User;
 
+use App\Traits\Favoritable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -11,7 +12,11 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class User extends Authenticatable implements HasMedia
 {
-    use HasApiTokens, HasFactory, Notifiable, InteractsWithMedia;
+    use HasApiTokens,
+        HasFactory,
+        Notifiable,
+        InteractsWithMedia,
+        Favoritable;
 
     /**
      * The attributes that are mass assignable.
