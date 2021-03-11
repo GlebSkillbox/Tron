@@ -14,6 +14,10 @@ class Message extends Model
         'body', 'sender_id', 'recipient_id', 'read', 'date_read',
     ];
 
+    protected $dates = [
+        'date_read',
+    ];
+
     public function sender()
     {
         return $this->belongsTo(User::class, 'sender_id');

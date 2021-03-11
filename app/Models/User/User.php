@@ -60,4 +60,18 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->hasMany(Message::class, 'recipient_id');
     }
+
+    public function sendMessageTo($recipient, $message)
+    {
+        return $this->sent()->create([
+            'body'         => $message,
+            'recipient_id' => $recipient,
+            'read'         => false,
+        ]);
+    }
+
+    public function allMessage()
+    {
+        return $this->received()->latest()->get();
+    }
 }
