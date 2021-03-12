@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User\User;
-use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -15,47 +16,23 @@ class AuthController extends Controller
         $this->middleware('guest')->only('register');
     }
 
-    public function register()
+    public function register(RegisterRequest $request)
     {
-        $validator = Validator::make(request()->all(), [
-            'login'    => ['required', 'string', 'unique:users', 'max:40'],
-            'email'    => ['required', 'string', 'email:filter', 'unique:users', 'max:40'],
-            'password' => ['required', 'string', 'min:4'],
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 401);
-        }
-
-        $data = request()->all();
-        $data['password'] = \Hash::make($data['password']);
-
-        $user = User::create($data);
+        $user = User::create($request->all());
 
         $token = $user->createToken('token_name')->plainTextToken;
 
         return response()->json(['access_token' => $token, 'type_token' => $this->typeToken]);
     }
 
-    public function login()
+    public function login(LoginRequest $request)
     {
-        $validator = Validator::make(request()->all(), [
-            'email'    => ['required', 'string'],
-            'password' => ['required']
-        ]);
+        if (auth()->attempt($request->only('email', 'password'))) {
+            $token = auth()->user()->createToken('token')->plainTextToken;
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()]);
+            return response()->json(['access_token' => $token, 'type_token' => $this->typeToken]);
         }
 
-        $user = User::where('email', request('email'))->first();
-
-        if (! $user || ! \Hash::check(request('password'), $user->password)) {
-            return response()->json(['error' => __('auth.failed')]);
-        }
-
-        $token = $user->createToken('token_name')->plainTextToken;
-
-        return response()->json(['access_token' => $token, 'type_token' => $this->typeToken]);
+        return response()->json(['error' => __('auth.failed')], 401);
     }
 }
